@@ -99,4 +99,17 @@ Then run the test:
 uv run python test.py
 `
 
-You should see predictions for the clothing item.
+We should see predictions for the clothing item...
+
+Alternative: Test with curl on Windows (on PowerShell):
+
+```bash
+curl.exe -X POST http://localhost:8080/predict `
+  -H "Content-Type: application/json" `
+  -d '{\"url\": \"http://bit.ly/mlbookcamp-pants\"}'
+```
+
+Or check the health endpoint:
+`
+curl http://localhost:8080/health
+`
