@@ -29,3 +29,17 @@ kubectl get nodes
 `
 
 We should see one node in "Ready" status.
+
+## STEP 1. Model Preparation
+
+We will use a pre-trained PyTorch model that classifies clothing items. The model has already been converted to ONNX format.
+
+Download the ONNX model:
+
+`
+mkdir service
+
+cd service
+
+wget https://github.com/DataTalksClub/machine-learning-zoomcamp/releases/download/dl-models/clothing_classifier_mobilenet_v2_latest.onnx -O clothing-model.onnx
+`
