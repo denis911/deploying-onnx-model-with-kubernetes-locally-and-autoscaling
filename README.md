@@ -23,8 +23,9 @@ Verify the cluster is running:
 `
 kubectl cluster-info
 `
+
 `
 kubectl get nodes
 `
 
-You should see one node in "Ready" status.
+We should see one node in "Ready" status.
