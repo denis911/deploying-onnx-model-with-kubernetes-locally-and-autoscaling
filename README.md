@@ -139,3 +139,11 @@ uv run python test.py
 `
 
 We should stop our uvicorn in its own terminal by ctrl-c to make sure docker can run on the same port.
+
+## STEP 5. Loading Image to Kind
+
+Kind clusters run in Docker, so they can't access images from your local Docker daemon by default. We need to load the image into Kind.
+
+`
+kind load docker-image clothing-classifier:v1 --name mlzoomcamp
+`
