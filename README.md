@@ -66,3 +66,17 @@ Add dependencies:
 `
 uv add fastapi uvicorn onnxruntime keras-image-helper numpy
 `
+
+Now create the FastAPI application. See service/app.py.
+
+Key points:
+
+- Uses ONNX Runtime for inference
+
+- Custom PyTorch-style preprocessing function (the PyTorch model requires specific normalization)
+
+- keras-image-helper for image preprocessing
+
+- Pydantic models for input/output validation
+
+- Health endpoint for Kubernetes health checks
