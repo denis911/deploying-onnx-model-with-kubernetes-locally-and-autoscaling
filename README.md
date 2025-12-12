@@ -44,3 +44,25 @@ cd service
 wget https://github.com/DataTalksClub/machine-learning-zoomcamp/releases/download/dl-models/clothing_classifier_mobilenet_v2_latest.onnx -O clothing-model.onnx
 
 ```
+
+The model predicts one of 10 clothing categories from an image URL.
+
+## STEP 2. Building the FastAPI Service
+
+We will create a FastAPI application that serves the ONNX model for inference.
+
+First, initialize the project:
+
+```bash
+
+# cd service
+uv init
+rm main.py
+
+```
+
+Add dependencies:
+
+`
+uv add fastapi uvicorn onnxruntime keras-image-helper numpy
+`
