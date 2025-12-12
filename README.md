@@ -80,3 +80,13 @@ Key points:
 - Pydantic models for input/output validation
 
 - Health endpoint for Kubernetes health checks
+
+## STEP 3. Testing Locally
+
+Run the service:
+
+`
+uv run uvicorn app:app --host 0.0.0.0 --port 8080 --reload
+`
+
+Open http://localhost:8080/docs to see the API documentation.
