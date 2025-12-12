@@ -85,8 +85,18 @@ Key points:
 
 Run the service:
 
+(cd service first... then check if win firewall is NOT blocking it...)
+
 `
 uv run uvicorn app:app --host 0.0.0.0 --port 8080 --reload
 `
 
-Open http://localhost:8080/docs to see the API documentation.
+Open http://localhost:8080/docs to see the Swagger UI API documentation.
+
+Then run the test:
+
+`
+uv run python test.py
+`
+
+You should see predictions for the clothing item.
