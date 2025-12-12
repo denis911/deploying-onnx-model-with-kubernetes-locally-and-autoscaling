@@ -22,7 +22,8 @@ Verify the cluster is running:
 
 `
 kubectl cluster-info
-
+`
+`
 kubectl get nodes
 `
 
