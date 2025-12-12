@@ -36,12 +36,11 @@ We will use a pre-trained PyTorch model that classifies clothing items. The mode
 
 Download the ONNX model:
 
-`
-
+```bash
 mkdir service
 
 cd service
 
 wget https://github.com/DataTalksClub/machine-learning-zoomcamp/releases/download/dl-models/clothing_classifier_mobilenet_v2_latest.onnx -O clothing-model.onnx
 
-`
+```
