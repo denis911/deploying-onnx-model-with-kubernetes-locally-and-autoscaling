@@ -113,3 +113,29 @@ Or check the health endpoint:
 `
 curl http://localhost:8080/health
 `
+
+## STEP 4. Docker Containerization
+
+Now let's containerize our application.
+
+Create service/Dockerfile.
+
+Build the image:
+
+`
+docker build -t clothing-classifier:v1 .
+`
+
+Test the container locally:
+
+`
+docker run -it --rm -p 8080:8080 clothing-classifier:v1
+`
+
+In another terminal, run the test script:
+
+`
+uv run python test.py
+`
+
+We should stop our uvicorn in its own terminal by ctrl-c to make sure docker can run on the same port.
