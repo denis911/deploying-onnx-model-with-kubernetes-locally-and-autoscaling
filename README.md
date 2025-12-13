@@ -147,3 +147,76 @@ Kind clusters run in Docker, so they can't access images from your local Docker 
 `
 kind load docker-image clothing-classifier:v1 --name mlzoomcamp
 `
+
+## STEP 6. Kubernetes Deployment
+
+Now let's deploy our service to Kubernetes.
+
+Understanding Kubernetes Resources
+
+- Pod: The smallest deployable unit in Kubernetes (one or more containers)
+
+- Deployment: Manages a set of identical Pods, handles updates and scaling
+
+- Service: Exposes Pods to network traffic
+
+- HPA (Horizontal Pod Autoscaler): Automatically scales Pods based on metrics
+
+Create Deployment Manifest
+
+Let's create a folder for all the config files:
+
+```bash
+mkdir k8s
+cd k8s
+```
+
+Create k8s/deployment.yaml
+
+Key configuration:
+
+replicas: 2 - Run 2 copies of our service
+imagePullPolicy: Never - Use local image (don't pull from registry)
+resources - Memory and CPU limits/requests
+livenessProbe - Restart container if unhealthy
+readinessProbe - Only send traffic when ready
+Deploy it:
+
+kubectl apply -f deployment.yaml
+Check the deployment:
+
+kubectl get deployments
+kubectl get pods
+kubectl describe deployment clothing-classifier
+View logs:
+
+kubectl logs -l app=clothing-classifier --tail=20
+Create Service Manifest
+Create k8s/service.yaml.
+
+Key configuration:
+
+type: NodePort - Expose on a static port on each node
+nodePort: 30080 - Accessible on port 30080 from host
+selector - Routes traffic to Pods with matching labels
+Deploy it:
+
+kubectl apply -f k8s/service.yaml
+Check the service:
+
+kubectl get services
+kubectl describe service clothing-classifier
+Testing the Deployed Service
+With NodePort, the service is accessible on localhost:30080:
+
+Check the health endpoint:
+
+curl http://localhost:30080/health
+Our kind cluster is not configured for NodePort, so it won't work. We don't really need this for testing things locally, so let's just use a quick fix: Use kubectl port-forward.
+
+kubectl port-forward service/clothing-classifier 30080:8080
+Now it's accessible on port 30080
+
+curl http://localhost:30080/health
+When we deploy to EKS or some other Kubernetes in the cloud, it won't be a problem - there Elastic Load Balancer will solve this problem.
+
