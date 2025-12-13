@@ -175,48 +175,81 @@ Create k8s/deployment.yaml
 
 Key configuration:
 
-replicas: 2 - Run 2 copies of our service
-imagePullPolicy: Never - Use local image (don't pull from registry)
-resources - Memory and CPU limits/requests
-livenessProbe - Restart container if unhealthy
-readinessProbe - Only send traffic when ready
+- replicas: 2 - Run 2 copies of our service
+
+- imagePullPolicy: Never - Use local image (don't pull from registry)
+
+- resources - Memory and CPU limits/requests
+
+- livenessProbe - Restart container if unhealthy
+
+- readinessProbe - Only send traffic when ready
+
 Deploy it:
 
+```bash
 kubectl apply -f deployment.yaml
+```
+
 Check the deployment:
 
+```bash
 kubectl get deployments
 kubectl get pods
 kubectl describe deployment clothing-classifier
+```
+
 View logs:
 
+```bash
 kubectl logs -l app=clothing-classifier --tail=20
+```
+
 Create Service Manifest
+
 Create k8s/service.yaml.
 
 Key configuration:
 
-type: NodePort - Expose on a static port on each node
-nodePort: 30080 - Accessible on port 30080 from host
-selector - Routes traffic to Pods with matching labels
+- type: NodePort - Expose on a static port on each node
+
+- nodePort: 30080 - Accessible on port 30080 from host
+
+- selector - Routes traffic to Pods with matching labels
+
 Deploy it:
 
+```bash
 kubectl apply -f k8s/service.yaml
+```
+
 Check the service:
 
+```bash
 kubectl get services
 kubectl describe service clothing-classifier
+```
+
 Testing the Deployed Service
+
 With NodePort, the service is accessible on localhost:30080:
 
 Check the health endpoint:
 
+```bash
 curl http://localhost:30080/health
+```
+
 Our kind cluster is not configured for NodePort, so it won't work. We don't really need this for testing things locally, so let's just use a quick fix: Use kubectl port-forward.
 
+```bash
 kubectl port-forward service/clothing-classifier 30080:8080
+```
+
 Now it's accessible on port 30080
 
+```bsh
 curl http://localhost:30080/health
-When we deploy to EKS or some other Kubernetes in the cloud, it won't be a problem - there Elastic Load Balancer will solve this problem.
+```
 
+When we deploy to EKS or some other Kubernetes in the cloud, it won't be a problem - there Elastic Load Balancer will solve this problem.
