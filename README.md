@@ -341,3 +341,26 @@ Check Pods:
 ```bash
 kubectl get pods -w
 ```
+
+## STEP 9. Cleanup
+
+Delete the deployment and service:
+
+```bash
+kubectl delete -f k8s/deployment.yaml
+kubectl delete -f k8s/service.yaml
+kubectl delete -f k8s/hpa.yaml
+```
+
+Or delete everything at once:
+
+```bash
+kubectl delete all -l app=clothing-classifier
+kubectl delete hpa clothing-classifier-hpa
+```
+
+Delete the Kind cluster:
+
+```bash
+kind delete cluster --name mlzoomcamp
+```
