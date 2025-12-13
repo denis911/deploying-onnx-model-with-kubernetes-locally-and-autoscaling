@@ -254,7 +254,7 @@ curl http://localhost:30080/health
 
 When we deploy to EKS or some other Kubernetes in the cloud, it won't be a problem - there Elastic Load Balancer will solve this problem.
 
-## Horizontal Pod Autoscaling
+## STEP 7. Horizontal Pod Autoscaling
 
 Kubernetes can automatically scale your application based on CPU or memory usage.
 
@@ -268,6 +268,12 @@ For Kind, we need to patch metrics-server to work without TLS:
 
 ```bash
 kubectl patch -n kube-system deployment metrics-server --type=json -p '[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"}]'
+```
+
+or for windows 1-line CMD shell command:
+
+```bash
+kubectl patch -n kube-system deployment metrics-server --type=json -p "[{\"op\":\"add\",\"path\":\"/spec/template/spec/containers/0/args/-\",\"value\":\"--kubelet-insecure-tls\"}]"
 ```
 
 Wait for metrics-server to be ready:
@@ -304,4 +310,34 @@ Check HPA status:
 ```bash
 kubectl get hpa
 kubectl describe hpa clothing-classifier-hpa
+```
+
+## STEP 8. Testing Autoscaling
+
+Generate load to trigger autoscaling. You can use a simple load test (see load_test.py)
+
+First, check that you can access the endpoint:
+
+```bash
+curl http://localhost:30080/health
+```
+
+Run the test:
+
+```bash
+uv run python load_test.py
+```
+
+While running the load test, watch the HPA in another terminal:
+
+```bash
+kubectl get hpa -w
+```
+
+We should see the number of replicas increase as CPU usage rises.
+
+Check Pods:
+
+```bash
+kubectl get pods -w
 ```
