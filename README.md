@@ -253,3 +253,55 @@ curl http://localhost:30080/health
 ```
 
 When we deploy to EKS or some other Kubernetes in the cloud, it won't be a problem - there Elastic Load Balancer will solve this problem.
+
+## Horizontal Pod Autoscaling
+
+Kubernetes can automatically scale your application based on CPU or memory usage.
+
+First, we need metrics-server for HPA to work. Install it in kubectl:
+
+```bash
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+```
+
+For Kind, we need to patch metrics-server to work without TLS:
+
+```bash
+kubectl patch -n kube-system deployment metrics-server --type=json -p '[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"}]'
+```
+
+Wait for metrics-server to be ready:
+
+```bash
+kubectl get deployment metrics-server -n kube-system
+```
+
+We should see something like that:
+
+```bash
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+metrics-server   1/1     1            1           72s
+```
+
+Now create k8s/hpa.yaml.
+
+Configuration:
+
+- Scale between 2 and 10 replicas
+
+- Target 50% CPU utilization
+
+- Automatically adds/removes Pods based on load
+
+Deploy HPA:
+
+```bash
+kubectl apply -f hpa.yaml
+```
+
+Check HPA status:
+
+```bash
+kubectl get hpa
+kubectl describe hpa clothing-classifier-hpa
+```
